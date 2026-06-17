@@ -5,6 +5,10 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\ProductReview;
 use App\Models\User;
+use App\Notifications\OrderConfirmedNotification;
+use App\Notifications\OrderDeliveredNotification;
+use App\Notifications\OrderShippedNotification;
+use App\Notifications\ReviewApprovedNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
 
@@ -12,22 +16,22 @@ class NotificationService
 {
     public function notifyOrderConfirmed(User $user, Order $order): void
     {
-        $user->notify(new \App\Notifications\OrderConfirmedNotification($order));
+        $user->notify(new OrderConfirmedNotification($order));
     }
 
     public function notifyOrderShipped(User $user, Order $order): void
     {
-        $user->notify(new \App\Notifications\OrderShippedNotification($order));
+        $user->notify(new OrderShippedNotification($order));
     }
 
     public function notifyOrderDelivered(User $user, Order $order): void
     {
-        $user->notify(new \App\Notifications\OrderDeliveredNotification($order));
+        $user->notify(new OrderDeliveredNotification($order));
     }
 
     public function notifyReviewApproved(User $user, ProductReview $review): void
     {
-        $user->notify(new \App\Notifications\ReviewApprovedNotification($review));
+        $user->notify(new ReviewApprovedNotification($review));
     }
 
     public function getUserNotifications(User $user, int $perPage = 20): Collection

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { SlidersHorizontal, X } from 'lucide-react'
 import type { ProductFilters } from '../../types'
 import { Button } from '../ui/Button'
-import { cn } from '../../utils/cn'
 
 interface FilterSidebarProps {
   filters: ProductFilters

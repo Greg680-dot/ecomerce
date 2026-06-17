@@ -11,8 +11,6 @@ use App\Models\ProductReview;
 use App\Models\ReturnModel;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {

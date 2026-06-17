@@ -1,6 +1,5 @@
 import type { Product } from '../../types'
 import { ProductCard } from './ProductCard'
-import { PageLoader } from '../ui/Spinner'
 
 interface ProductGridProps {
   products: Product[]

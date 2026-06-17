@@ -1,14 +1,32 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { User } from '../types'
-import { authApi } from '../services/auth'
+import type { User, UserRole } from '../types'
+import { authApi, type ApiUser } from '../services/auth'
+
+function mapUser(apiUser: ApiUser): User {
+  const name = (apiUser.name ?? '').trim()
+  const [firstName, ...rest] = name.split(' ')
+
+  return {
+    id: String(apiUser.id),
+    email: apiUser.email,
+    firstName: firstName ?? '',
+    lastName: rest.join(' '),
+    phone: apiUser.phone ?? undefined,
+    avatar: apiUser.avatar ?? undefined,
+    role: (apiUser.role as UserRole) ?? 'customer',
+    isVerified: !!apiUser.email_verified_at,
+    createdAt: apiUser.created_at ?? '',
+    updatedAt: apiUser.created_at ?? '',
+  }
+}
 
 interface AuthState {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
   setUser: (user: User | null) => void
-  setTokens: (accessToken: string, refreshToken: string) => void
+  setToken: (token: string) => void
   login: (email: string, password: string) => Promise<void>
   register: (data: {
     email: string
@@ -32,17 +50,16 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) =>
         set({ user, isAuthenticated: !!user }),
 
-      setTokens: (accessToken, refreshToken) => {
-        localStorage.setItem('accessToken', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
+      setToken: (token) => {
+        localStorage.setItem('accessToken', token)
       },
 
       login: async (email, password) => {
         set({ isLoading: true })
         try {
           const { data } = await authApi.login({ email, password })
-          get().setTokens(data.data.accessToken, data.data.refreshToken)
-          set({ user: data.data.user, isAuthenticated: true, isLoading: false })
+          get().setToken(data.token)
+          set({ user: mapUser(data.user), isAuthenticated: true, isLoading: false })
         } catch (error) {
           set({ isLoading: false })
           throw error
@@ -52,9 +69,16 @@ export const useAuthStore = create<AuthState>()(
       register: async (registerData) => {
         set({ isLoading: true })
         try {
-          const { data } = await authApi.register(registerData)
-          get().setTokens(data.data.accessToken, data.data.refreshToken)
-          set({ user: data.data.user, isAuthenticated: true, isLoading: false })
+          const fullName = `${registerData.firstName} ${registerData.lastName}`.trim()
+          const { data } = await authApi.register({
+            name: fullName,
+            email: registerData.email,
+            password: registerData.password,
+            password_confirmation: registerData.password,
+            phone: registerData.phone,
+          })
+          get().setToken(data.token)
+          set({ user: mapUser(data.user), isAuthenticated: true, isLoading: false })
         } catch (error) {
           set({ isLoading: false })
           throw error
@@ -68,7 +92,6 @@ export const useAuthStore = create<AuthState>()(
           // ignore logout errors
         } finally {
           localStorage.removeItem('accessToken')
-          localStorage.removeItem('refreshToken')
           set({ user: null, isAuthenticated: false })
         }
       },
@@ -80,17 +103,16 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true })
         try {
           const { data } = await authApi.getProfile()
-          set({ user: data.data, isAuthenticated: true, isLoading: false })
+          set({ user: mapUser(data.data), isAuthenticated: true, isLoading: false })
         } catch {
           localStorage.removeItem('accessToken')
-          localStorage.removeItem('refreshToken')
           set({ user: null, isAuthenticated: false, isLoading: false })
         }
       },
 
       isAdmin: () => {
         const { user } = get()
-        return user?.role === 'admin' || user?.role === 'staff'
+        return user?.role === 'admin'
       },
     }),
     {

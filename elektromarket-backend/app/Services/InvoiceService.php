@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class InvoiceService
 {
@@ -30,7 +31,7 @@ class InvoiceService
         return $filename;
     }
 
-    public function download(Order $order): \Symfony\Component\HttpFoundation\Response
+    public function download(Order $order): Response
     {
         if (! $order->invoice_path || ! Storage::disk('local')->exists($order->invoice_path)) {
             $this->generate($order);
