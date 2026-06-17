@@ -1,0 +1,37 @@
+import { Moon, Sun } from 'lucide-react'
+import { useThemeStore } from '../../store/themeStore'
+import { cn } from '../../utils/cn'
+
+interface DarkModeToggleProps {
+  className?: string
+}
+
+export function DarkModeToggle({ className }: DarkModeToggleProps) {
+  const { theme, toggleTheme } = useThemeStore()
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className={cn(
+        'relative flex h-9 w-9 items-center justify-center rounded-lg',
+        'text-[var(--text-secondary)] transition-all duration-300',
+        'hover:bg-[var(--bg-tertiary)] hover:text-primary',
+        className,
+      )}
+      aria-label={theme === 'dark' ? 'Hellmodus aktivieren' : 'Dunkelmodus aktivieren'}
+    >
+      <Sun
+        className={cn(
+          'h-5 w-5 transition-all duration-300',
+          theme === 'dark' ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100',
+        )}
+      />
+      <Moon
+        className={cn(
+          'absolute h-5 w-5 transition-all duration-300',
+          theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
+        )}
+      />
+    </button>
+  )
+}
