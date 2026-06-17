@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class SearchService
 {
-    protected ?\Elastic\Elasticsearch\Client $client = null;
+    protected ?Client $client = null;
 
     public function search(string $query, array $filters = [], int $perPage = 20): LengthAwarePaginator
     {
@@ -73,7 +74,7 @@ class SearchService
             && ! empty(config('services.elasticsearch.host'));
     }
 
-    protected function getClient(): \Elastic\Elasticsearch\Client
+    protected function getClient(): Client
     {
         if ($this->client === null) {
             $this->client = ClientBuilder::create()

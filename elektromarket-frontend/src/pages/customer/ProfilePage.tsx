@@ -29,7 +29,7 @@ export default function ProfilePage() {
     },
   })
 
-  const onSubmit = async (_data: ProfileForm) => {
+  const onSubmit = async () => {
     // API call would go here
   }
 

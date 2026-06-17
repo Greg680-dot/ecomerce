@@ -7,7 +7,6 @@ import { RatingStars } from '../ui/RatingStars'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 import { useCartStore } from '../../store/cartStore'
-import { cn } from '../../utils/cn'
 
 interface ProductCardProps {
   product: Product

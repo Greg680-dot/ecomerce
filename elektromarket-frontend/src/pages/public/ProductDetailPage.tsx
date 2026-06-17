@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { ShoppingCart, Heart, GitCompare, Truck, Shield, Minus, Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Breadcrumb } from '../../components/ui/Breadcrumb'

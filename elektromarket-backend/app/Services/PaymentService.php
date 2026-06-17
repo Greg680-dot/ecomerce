@@ -9,6 +9,7 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Stripe\PaymentIntent;
+use Stripe\Refund;
 use Stripe\Stripe;
 
 class PaymentService
@@ -136,7 +137,7 @@ class PaymentService
     {
         if ($payment->method === PaymentMethod::Stripe && $payment->transaction_id) {
             Stripe::setApiKey(config('services.stripe.secret'));
-            \Stripe\Refund::create([
+            Refund::create([
                 'payment_intent' => $payment->transaction_id,
                 'amount' => $amount ? (int) round($amount * 100) : null,
             ]);

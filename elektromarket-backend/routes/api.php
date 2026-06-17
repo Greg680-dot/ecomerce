@@ -1,18 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\AddressController;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\BrandController;
-use App\Http\Controllers\Api\CartController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\ComparisonController;
-use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\PaymentController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\QuestionController;
-use App\Http\Controllers\Api\ReviewController;
-use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\Admin\AnalyticsController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\Admin\DashboardController;
@@ -25,6 +13,18 @@ use App\Http\Controllers\Api\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Api\Admin\SettingController;
 use App\Http\Controllers\Api\Admin\StockController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ComparisonController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {

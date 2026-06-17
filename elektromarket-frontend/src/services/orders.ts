@@ -3,7 +3,6 @@ import type {
   Address,
   ApiResponse,
   Notification,
-  PaginatedResponse,
   WishlistItem,
 } from '../types'
 
